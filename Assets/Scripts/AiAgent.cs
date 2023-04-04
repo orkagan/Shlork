@@ -12,30 +12,45 @@ public class AiAgent : MonoBehaviour
     [SerializeField] private Transform[] _waypoints;
     [SerializeField] private int _index;
     [SerializeField] private float _viewRange=5f;
+    private FieldOfView fow;
+
+    private void Start()
+    {
+        fow = GetComponent<FieldOfView>();
+    }
     public bool IsPlayerInRange()
     {
         //Ternary operator "variable = (condition) ? expressionTrue :  expressionFalse;"
-        bool _inRange = (Vector2.Distance(transform.position, _player.transform.position)<_viewRange) ? true : false;
+        //bool _inRange = (Vector2.Distance(transform.position, _player.transform.position)<_viewRange) ? true : false;
         //return _inRange;
+        if (_player == null) return false;
+        if (fow.visibleTargets.Contains(_player.transform))
+        {
+            return true;
+        }
         return false;
     }
     
     public void ChasePlayer()
     {
-        _moveSpeed = _speed * 1.2f;
-        MoveToPoint(_player.transform.position);
-        _lastSeen = _player.transform.position;
+        if (_player != null)
+        {
+            _moveSpeed = _speed * 1.2f;
+            MoveToPoint(_player.transform.position);
+            _lastSeen = _player.transform.position;
+        }
     }
 
     public void HuntForPlayer()
     {
-        MoveToPoint(_lastSeen);
-
-        //dumb orbit code
-        /*if (Vector2.Distance(transform.position, _lastSeen) < 1)
+        if (Vector2.Distance(transform.position, _lastSeen) > 0.1f)
         {
-            transform.RotateAround(_lastSeen,Vector3.up,_moveSpeed*Time.deltaTime);
-        }*/
+            MoveToPoint(_lastSeen);
+        }
+        else
+        {
+            transform.eulerAngles += new Vector3(0,0,3f);
+        }
     }
 
     public void Patrol()
@@ -43,7 +58,7 @@ public class AiAgent : MonoBehaviour
         _moveSpeed = _speed * 0.8f;
         MoveToPoint(_waypoints[_index].position);
 
-        if (Vector2.Distance(transform.position, _waypoints[_index].position) < 0.1)
+        if (Vector2.Distance(transform.position, _waypoints[_index].position) < 0.1f)
         {
             _index = (_index + 1) % (_waypoints.Length);
         }
