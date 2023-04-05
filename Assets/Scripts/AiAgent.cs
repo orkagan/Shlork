@@ -5,18 +5,20 @@ using UnityEngine;
 public class AiAgent : MonoBehaviour
 {
     [SerializeField] private float _speed = 5f;
+    [SerializeField] private float _spinSpeed = 50f;
     private float _moveSpeed;
     [SerializeField] private GameObject _player;
     private Vector3 _lastSeen;
 
     [SerializeField] private Transform[] _waypoints;
     [SerializeField] private int _index;
-    [SerializeField] private float _viewRange=5f;
+    //[SerializeField] private float _viewRange = 5f;
     private FieldOfView fow;
 
     private void Start()
     {
         fow = GetComponent<FieldOfView>();
+        _player = GameObject.FindGameObjectWithTag("Player");
     }
     public bool IsPlayerInRange()
     {
@@ -49,7 +51,7 @@ public class AiAgent : MonoBehaviour
         }
         else
         {
-            transform.eulerAngles += new Vector3(0,0,3f);
+            transform.eulerAngles += new Vector3(0, 0, _spinSpeed * Time.deltaTime);
         }
     }
 

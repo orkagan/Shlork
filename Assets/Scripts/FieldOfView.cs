@@ -11,7 +11,7 @@ public class FieldOfView : MonoBehaviour
     public LayerMask targetMask;
     public LayerMask obstacleMask;
 
-    public List<Transform> visibleTargets = new List<Transform>();
+    public List<Transform> visibleTargets;
 
     public float meshResolution;
     public int edgeResolveIterations;
@@ -22,6 +22,7 @@ public class FieldOfView : MonoBehaviour
 
     private void Start()
     {
+        visibleTargets = new List<Transform>();
         viewMesh = new Mesh();
         viewMesh.name = "View Mesh";
         viewMeshFilter.mesh = viewMesh;
