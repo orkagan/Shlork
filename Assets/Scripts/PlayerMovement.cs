@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector2 mousePos;
     private Vector2 velocity;
+    private Vector2 moveDir;
     
     // Start is called before the first frame update
     void Start()
@@ -19,20 +20,14 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        velocity = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0).normalized * moveSpeed;
-        //transform.position += _moveDir;
-        //rb.velocity += new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized * moveSpeed * Time.deltaTime;
+        moveDir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized;
+
 
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         transform.up = mousePos - (Vector2)transform.position;
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log("Haven't added a jump yet.");
-        }
     }
     private void FixedUpdate()
     {
-        rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);
+        rb.velocity = moveDir * 20 * moveSpeed * Time.fixedDeltaTime;
     }
 }

@@ -16,11 +16,12 @@ public class StateMachine : MonoBehaviour
     [SerializeField] private float _huntTime = 5f;
 
     private AiAgent _aiAgent;
-    private SpriteRenderer _spriteRenderer;
+    private GameObject _alert;
+    //private SpriteRenderer _spriteRenderer;
     private void Start()
     {
         _aiAgent = GetComponent<AiAgent>();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        //_spriteRenderer = GetComponent<SpriteRenderer>();
 
         NextState();
     }
@@ -44,7 +45,7 @@ public class StateMachine : MonoBehaviour
     }
     private IEnumerator PatrolState()
     {
-        _spriteRenderer.color = Color.yellow;
+        //_spriteRenderer.color = Color.yellow;
         _aiAgent.Search();
         while (_state == State.Patrol) //while loop runs once per game step
         {
@@ -59,7 +60,7 @@ public class StateMachine : MonoBehaviour
 
     private IEnumerator ChaseState()
     {
-        _spriteRenderer.color = Color.red;
+        //_spriteRenderer.color = Color.red;
         while (_state == State.Chase)
         {
             //run this code
@@ -72,7 +73,7 @@ public class StateMachine : MonoBehaviour
     }
     private IEnumerator HuntState()
     {
-        _spriteRenderer.color = Color.magenta;
+        //_spriteRenderer.color = Color.magenta;
         float timer = _huntTime;
         while (_state == State.Hunt && timer>0)
         {

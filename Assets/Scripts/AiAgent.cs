@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class AiAgent : MonoBehaviour
 {
-    [SerializeField] private float _speed = 5f;
-    [SerializeField] private float _spinSpeed = 50f;
-    private float _moveSpeed;
-    [SerializeField] private GameObject _player;
+    [SerializeField] protected float _speed = 5f;
+    [SerializeField] protected float _spinSpeed = 50f;
+    protected float _moveSpeed;
+    [SerializeField] protected GameObject _player;
     private Vector3 _lastSeen;
 
-    [SerializeField] private Transform[] _waypoints;
-    [SerializeField] private int _index;
+    [SerializeField] protected Transform[] _waypoints;
+    [SerializeField] protected int _index;
     //[SerializeField] private float _viewRange = 5f;
-    private FieldOfView fow;
+    protected FieldOfView fov;
 
     private void Start()
     {
-        fow = GetComponent<FieldOfView>();
+        fov = GetComponent<FieldOfView>();
         _player = GameObject.FindGameObjectWithTag("Player");
     }
     public bool IsPlayerInRange()
@@ -26,7 +26,7 @@ public class AiAgent : MonoBehaviour
         //bool _inRange = (Vector2.Distance(transform.position, _player.transform.position)<_viewRange) ? true : false;
         //return _inRange;
         if (_player == null) return false;
-        if (fow.visibleTargets.Contains(_player.transform))
+        if (fov.visibleTargets.Contains(_player.transform))
         {
             return true;
         }
@@ -55,7 +55,7 @@ public class AiAgent : MonoBehaviour
         }
     }
 
-    public void Patrol()
+    public virtual void Patrol()
     {
         _moveSpeed = _speed * 0.8f;
         MoveToPoint(_waypoints[_index].position);
@@ -66,7 +66,7 @@ public class AiAgent : MonoBehaviour
         }
     }
 
-    void MoveToPoint(Vector2 target)
+    protected void MoveToPoint(Vector2 target)
     {
         Vector2 directionToPlayer = target - (Vector2)transform.position;
         if (directionToPlayer.magnitude > 0.1f)
